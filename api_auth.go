@@ -2,10 +2,10 @@ package portainer
 
 import (
 	"context"
+	"github.com/eleztian/portainer-client/model"
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"portainer/model"
 	"strings"
 )
 

@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 	"github.com/antihax/optional"
+	"github.com/eleztian/portainer-client/model"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
-	"portainer/model"
 	"strings"
 )
 
