@@ -124,7 +124,7 @@ func (a *EndpointsApiService) EndpointCreate(ctx context.Context, name string, e
 		localVarFileName = localVarFile.Name()
 		localVarFile.Close()
 	}
-	var localVarFile *os.File
+	//var localVarFile *os.File
 	if localVarOptionals != nil && localVarOptionals.TLSCertFile.IsSet() {
 		localVarFileOk := false
 		localVarFile, localVarFileOk = localVarOptionals.TLSCertFile.Value().(*os.File)
@@ -138,7 +138,7 @@ func (a *EndpointsApiService) EndpointCreate(ctx context.Context, name string, e
 		localVarFileName = localVarFile.Name()
 		localVarFile.Close()
 	}
-	var localVarFile *os.File
+	//var localVarFile *os.File
 	if localVarOptionals != nil && localVarOptionals.TLSKeyFile.IsSet() {
 		localVarFileOk := false
 		localVarFile, localVarFileOk = localVarOptionals.TLSKeyFile.Value().(*os.File)
