@@ -4,7 +4,7 @@ import "time"
 
 type Stack struct {
 	// Stack identifier
-	Id string `json:"Id,omitempty"`
+	Id int `json:"Id,omitempty"`
 	// Stack name
 	Name string `json:"Name,omitempty"`
 	// Stack type. 1 for a Swarm stack, 2 for a Compose stack
