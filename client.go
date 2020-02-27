@@ -31,8 +31,9 @@ var (
 // APIClient manages communication with the Portainer API API v1.23.1
 // In most cases there should be only one, shared, APIClient.
 type APIClient struct {
-	cfg    *Configuration
-	common service // Reuse a single struct instead of allocating one for each service on the heap.
+	JwtToken string
+	cfg      *Configuration
+	common   service // Reuse a single struct instead of allocating one for each service on the heap.
 
 	// API Services
 
@@ -69,6 +70,8 @@ type APIClient struct {
 	UploadApi *UploadApiService
 
 	UsersApi *UsersApiService
+
+	DockerApi *DockerApiService
 }
 
 type service struct {
@@ -104,7 +107,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.TemplatesApi = (*TemplatesApiService)(&c.common)
 	c.UploadApi = (*UploadApiService)(&c.common)
 	c.UsersApi = (*UsersApiService)(&c.common)
-
+	c.DockerApi = (*DockerApiService)(&c.common)
 	return c
 }
 
@@ -303,6 +306,10 @@ func (c *APIClient) prepareRequest(
 	// Add the user agent to the request.
 	localVarRequest.Header.Add("User-Agent", c.cfg.UserAgent)
 
+	if c.JwtToken != "" {
+		localVarRequest.Header.Add("Authorization", "Bearer "+c.JwtToken)
+	}
+
 	if ctx != nil {
 		// add context to the request
 		localVarRequest = localVarRequest.WithContext(ctx)
@@ -328,6 +335,7 @@ func (c *APIClient) prepareRequest(
 		// AccessToken Authentication
 		if auth, ok := ctx.Value(ContextAccessToken).(string); ok {
 			localVarRequest.Header.Add("Authorization", "Bearer "+auth)
+			c.JwtToken = auth
 		}
 	}
 

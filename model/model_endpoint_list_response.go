@@ -1,4 +1,3 @@
 package model
 
-type EndpointListResponse struct {
-}
+type EndpointListResponse []Endpoint

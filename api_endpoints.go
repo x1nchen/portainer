@@ -707,7 +707,7 @@ func (a *EndpointsApiService) EndpointList(ctx context.Context) (model.EndpointL
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue model.EndpointListResponse
+		localVarReturnValue = make(model.EndpointListResponse, 0)
 	)
 
 	// create path and map variables
@@ -751,7 +751,6 @@ func (a *EndpointsApiService) EndpointList(ctx context.Context) (model.EndpointL
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
-
 	localVarHttpResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
 		return localVarReturnValue, localVarHttpResponse, err

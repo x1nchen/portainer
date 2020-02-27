@@ -8,7 +8,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"os"
 	"strings"
 )
 
@@ -37,16 +36,14 @@ Deploy a new stack into a Docker environment specified via the endpoint identifi
 @return Stack
 */
 
-type StackCreateOpts struct {
-	Body       optional.Interface
-	Name       optional.String
-	EndpointID optional.String
-	SwarmID    optional.String
-	File       optional.Interface
-	Env        optional.String
+type StackCreateRequest struct {
+	Name             string
+	SwarmID          string
+	StackFileContent string
+	Env              []model.StackEnv
 }
 
-func (a *StacksApiService) StackCreate(ctx context.Context, type_ int32, method string, endpointId int32, localVarOptionals *StackCreateOpts) (model.Stack, *http.Response, error) {
+func (a *StacksApiService) StackCreate(ctx context.Context, type_ int32, method string, endpointId int32, body StackCreateRequest) (model.Stack, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
 		localVarPostBody    interface{}
@@ -66,7 +63,7 @@ func (a *StacksApiService) StackCreate(ctx context.Context, type_ int32, method 
 	localVarQueryParams.Add("method", parameterToString(method, ""))
 	localVarQueryParams.Add("endpointId", parameterToString(endpointId, ""))
 	// to determine the Content-Type header
-	localVarHttpContentTypes := []string{"multipart/form-data"}
+	localVarHttpContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
@@ -82,41 +79,8 @@ func (a *StacksApiService) StackCreate(ctx context.Context, type_ int32, method 
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.Name.IsSet() {
-		localVarFormParams.Add("Name", parameterToString(localVarOptionals.Name.Value(), ""))
-	}
-	if localVarOptionals != nil && localVarOptionals.EndpointID.IsSet() {
-		localVarFormParams.Add("EndpointID", parameterToString(localVarOptionals.EndpointID.Value(), ""))
-	}
-	if localVarOptionals != nil && localVarOptionals.SwarmID.IsSet() {
-		localVarFormParams.Add("SwarmID", parameterToString(localVarOptionals.SwarmID.Value(), ""))
-	}
-	var localVarFile *os.File
-	if localVarOptionals != nil && localVarOptionals.File.IsSet() {
-		localVarFileOk := false
-		localVarFile, localVarFileOk = localVarOptionals.File.Value().(*os.File)
-		if !localVarFileOk {
-			return localVarReturnValue, nil, reportError("file should be *os.File")
-		}
-	}
-	if localVarFile != nil {
-		fbs, _ := ioutil.ReadAll(localVarFile)
-		localVarFileBytes = fbs
-		localVarFileName = localVarFile.Name()
-		localVarFile.Close()
-	}
-	if localVarOptionals != nil && localVarOptionals.Env.IsSet() {
-		localVarFormParams.Add("Env", parameterToString(localVarOptionals.Env.Value(), ""))
-	}
-	// body params
-	if localVarOptionals != nil && localVarOptionals.Body.IsSet() {
+	localVarPostBody = &body
 
-		localVarOptionalBody, localVarOptionalBodyok := localVarOptionals.Body.Value().(model.StackCreateRequest)
-		if !localVarOptionalBodyok {
-			return localVarReturnValue, nil, reportError("body should be StackCreateRequest")
-		}
-		localVarPostBody = &localVarOptionalBody
-	}
 	if ctx != nil {
 		// API Key Authentication
 		if auth, ok := ctx.Value(ContextAPIKey).(APIKey); ok {
@@ -668,13 +632,13 @@ type StackListOpts struct {
 	Filters optional.String
 }
 
-func (a *StacksApiService) StackList(ctx context.Context, localVarOptionals *StackListOpts) (model.StackListResponse, *http.Response, error) {
+func (a *StacksApiService) StackList(ctx context.Context, localVarOptionals *StackListOpts) ([]model.Stack, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue model.StackListResponse
+		localVarReturnValue = make([]model.Stack, 0)
 	)
 
 	// create path and map variables
@@ -968,8 +932,7 @@ func (a *StacksApiService) StackUpdate(ctx context.Context, id int32, body model
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/stacks/{id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", fmt.Sprintf("%v", id), -1)
+	localVarPath := a.client.cfg.BasePath + fmt.Sprintf("/stacks/%d", id)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
