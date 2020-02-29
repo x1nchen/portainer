@@ -6,5 +6,6 @@ type ResourceControlUpdateRequest struct {
 	// List of user identifiers with access to the associated resource
 	Users []int32 `json:"Users,omitempty"`
 	// List of team identifiers with access to the associated resource
-	Teams []int32 `json:"Teams,omitempty"`
+	Teams              []int32 `json:"Teams,omitempty"`
+	AdministratorsOnly bool    `json:"AdministratorsOnly"`
 }
