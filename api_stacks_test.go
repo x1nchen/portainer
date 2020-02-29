@@ -23,7 +23,7 @@ func TestStacksApiService_StackList(t *testing.T) {
 	}
 	sl, _, err := client.StacksApi.StackList(ContextWithAPIKey(context.TODO(), rsp.Jwt), &StackListOpts{Filters: optional.NewString(`{"SwarmID":"jq8yqjtr1pkqkfxhsl9racm00"}`)})
 
-	fmt.Println(sl[0].Name)
+	fmt.Println(sl[0].ResourceControl)
 }
 
 func TestStacksApiService_StackInspect(t *testing.T) {
