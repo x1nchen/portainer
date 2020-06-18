@@ -2,11 +2,12 @@ package portainer
 
 import (
 	"context"
-	"github.com/x1nchen/portainer/model"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/x1nchen/portainer/model"
 )
 
 // Linger please

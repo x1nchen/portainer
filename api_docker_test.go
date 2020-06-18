@@ -3,9 +3,10 @@ package portainer
 import (
 	"context"
 	"fmt"
-	"github.com/x1nchen/portainer/model"
 	"io/ioutil"
 	"testing"
+
+	"github.com/x1nchen/portainer/model"
 )
 
 func TestDockerApiService_DockerInfo(t *testing.T) {
@@ -57,4 +58,32 @@ func TestDockerApiService_Nodes(t *testing.T) {
 		t.Error(err)
 	}
 	fmt.Println(res[0].ID)
+}
+
+func TestDockerApiService_ListContainer(t *testing.T) {
+	client := NewAPIClient(&Configuration{
+		BasePath:      "http://192.168.120.71:9010/api",
+		DefaultHeader: map[string]string{},
+		UserAgent:     "iast/sdl_config",
+	})
+	rsp, rspRaw, err := client.AuthApi.AuthenticateUser(context.TODO(), model.AuthenticateUserRequest{
+		Username: "admin",
+		Password: "moresec2019",
+	})
+	if err != nil {
+		t.Error(err)
+	}
+	fmt.Println(rsp.Jwt)
+	r, _ := ioutil.ReadAll(rspRaw.Body)
+	fmt.Println(string(r))
+	sl, _, err := client.EndpointsApi.EndpointList(ContextWithAPIKey(context.TODO(), rsp.Jwt))
+	if err != nil {
+		t.Error(err)
+	}
+
+	res, _, err := client.DockerApi.ListContainer(context.TODO(), sl[0].Id)
+	if err != nil {
+		t.Error(err)
+	}
+	fmt.Println(res[0])
 }
