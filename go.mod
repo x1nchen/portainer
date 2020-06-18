@@ -1,4 +1,4 @@
-module github.com/eleztian/portainer
+module github.com/x1nchen/portainer
 
 go 1.13
 

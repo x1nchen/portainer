@@ -3,7 +3,7 @@ package portainer
 import (
 	"context"
 	"fmt"
-	"github.com/eleztian/portainer/model"
+	"github.com/x1nchen/portainer/model"
 	"io/ioutil"
 	"net/http"
 	"net/url"
