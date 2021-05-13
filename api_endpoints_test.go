@@ -3,14 +3,20 @@ package portainer
 import (
 	"context"
 	"fmt"
-	"github.com/x1nchen/portainer/model"
 	"io/ioutil"
 	"testing"
+
+	"github.com/x1nchen/portainer/model"
 )
 
 func ContextWithAPIKey(ctx context.Context, jwt string) context.Context {
 	return context.WithValue(ctx, ContextAccessToken, jwt)
 }
+
+func ContextWithAPIKeySecret(ctx context.Context, key APIKey) context.Context {
+	return context.WithValue(ctx, ContextAccessToken, key)
+}
+
 func TestEndpointsApiService_EndpointList(t *testing.T) {
 	client := NewAPIClient(&Configuration{
 		BasePath:      "http://192.168.120.71:9010/api",

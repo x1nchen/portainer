@@ -3,13 +3,14 @@ package portainer
 import (
 	"context"
 	"fmt"
-	"github.com/antihax/optional"
-	"github.com/x1nchen/portainer/model"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
 	"strings"
+
+	"github.com/antihax/optional"
+	"github.com/x1nchen/portainer/model"
 )
 
 // Linger please
@@ -736,7 +737,7 @@ func (a *EndpointsApiService) EndpointList(ctx context.Context) (model.EndpointL
 	}
 	if ctx != nil {
 		// API Key Authentication
-		if auth, ok := ctx.Value(ContextAPIKey).(APIKey); ok {
+		if auth, ok := ctx.Value(ContextAccessToken).(APIKey); ok {
 			var key string
 			if auth.Prefix != "" {
 				key = auth.Prefix + " " + auth.Key

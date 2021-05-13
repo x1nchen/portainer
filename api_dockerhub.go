@@ -2,11 +2,12 @@ package portainer
 
 import (
 	"context"
-	"github.com/x1nchen/portainer/model"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/x1nchen/portainer/model"
 )
 
 // Linger please
@@ -99,7 +100,7 @@ func (a *DockerhubApiService) DockerHubInspect(ctx context.Context) (model.Docke
 			error: localVarHttpResponse.Status,
 		}
 
-		if localVarHttpResponse.StatusCode == 200 {
+		if localVarHttpResponse.StatusCode == 400 {
 			var v model.DockerHubSubset
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
