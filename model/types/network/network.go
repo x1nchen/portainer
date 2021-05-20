@@ -100,12 +100,6 @@ func (es *EndpointSettings) Copy() *EndpointSettings {
 	return &epCopy
 }
 
-// NetworkingConfig represents the container's networking configuration for each of its interfaces
-// Carries the networking configs specified in the `docker run` and `docker network connect` commands
-type NetworkingConfig struct {
-	EndpointsConfig map[string]*EndpointSettings // Endpoint configs for each connecting network
-}
-
 // ConfigReference specifies the source which provides a network's configuration
 type ConfigReference struct {
 	Network string

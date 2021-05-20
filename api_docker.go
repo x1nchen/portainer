@@ -454,7 +454,12 @@ func (a *DockerApiService) InspectContainer(
 }
 
 // https://portainer.host/api/endpoints/{endpoint_id}/docker/containers/create?name={container_name}
-func (a *DockerApiService) CreateContainer(ctx context.Context, endpointId int32, containerName string, spec types.ContainerJSON) (model.DockerContainer, *http.Response, error) {
+func (a *DockerApiService) CreateContainer(
+	ctx context.Context,
+	endpointId int32,
+	containerName string,
+	spec model.ContainerConfigWrapper,
+) (model.DockerContainer, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
 		localVarPostBody    interface{}
@@ -528,17 +533,6 @@ func (a *DockerApiService) CreateContainer(ctx context.Context, endpointId int32
 		newErr := GenericSwaggerError{
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
-		}
-
-		if localVarHttpResponse.StatusCode == 200 {
-			var v model.EndpointListResponse
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
 		}
 
 		if localVarHttpResponse.StatusCode == 500 {
@@ -773,7 +767,6 @@ func (a *DockerApiService) DeleteContainer(
 
 	return localVarHttpResponse, nil
 }
-
 
 // StartContainer
 // https://portainer.host/api/endpoints/{endpoint_id}/docker/containers/{container_id}/start
