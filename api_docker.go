@@ -286,7 +286,7 @@ func (a *DockerApiService) ListContainer(ctx context.Context, endpointId int32) 
 
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
-		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+		err = a.client.decode(&localVarReturnValue, localVarBody, "application/json")
 		if err == nil {
 			return localVarReturnValue, localVarHttpResponse, err
 		}
