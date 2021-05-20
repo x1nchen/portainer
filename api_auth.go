@@ -78,7 +78,7 @@ func (a *AuthApiService) AuthenticateUser(ctx context.Context, body model.Authen
 
 	if localVarHttpResponse.StatusCode < 300 {
 		// If we succeed, return the data, otherwise pass on to decode error.
-		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+		err = a.client.decode(&localVarReturnValue, localVarBody, "application/json")
 		if err == nil {
 			return localVarReturnValue, localVarHttpResponse, err
 		}
@@ -88,17 +88,6 @@ func (a *AuthApiService) AuthenticateUser(ctx context.Context, body model.Authen
 		newErr := GenericSwaggerError{
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
-		}
-
-		if localVarHttpResponse.StatusCode == 200 {
-			var v model.AuthenticateUserResponse
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
 		}
 
 		if localVarHttpResponse.StatusCode == 400 {
